@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>socket rooms</title>
+</head>
+
+<body>
+    <a onclick = "joinroom(1)">1</a>
+    <a onclick = "joinroom(2)">2</a>
+    <input type="text" id="msg"/>
+    <input type="button" value="发送" id="send" onclick="send()"/>
+    <div id="log"></div>
+    <script src="http://localhost/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io('http://localhost/');
+        log =(...args)=>{
+            document.getElementById('log').innerHTML +='<br/>'+args.map(item=>JSON.stringify(item)).join(' ')+'=>'+(+new Date());
+        } 
+
+        log(socket.id)
+        let user ={},room,client;
+        socket.on('connect', (c) => {
+            log('connect ...', socket.id);
+            socket.on('user',u=>{
+                user = u;
+                log('用户ID',u.uid)
+            });
+        });
+        socket.on('message',msg=>{
+            log('message:',msg)
+        });
+        function joinroom(num){
+            //加入房间号为1的房间
+            socket.emit('join',num);
+        }
+        function send(){
+            let msg = document.getElementById('msg').value;
+            socket.emit('message',{type:'TALK',body:msg})
+            // setInterval(function(){
+            //     socket.emit('message',{type:'TALK',body:+new Date()})
+            // },2000)
+        }
+        
+    </script>
+</body>
+
+</html>
