@@ -17,6 +17,10 @@ io.on('connection', client => {
     client.on('message',msg=>{
         if(user.roomId){
             // io.to(user.roomId).emit('message',msg)
+            if(msg.type == 'update'){
+                user.update(msg.body);
+            }
+            msg.user = user.uid;
             Rooms.send(user.roomId,msg)
         }else{
             io.emit('message',msg)

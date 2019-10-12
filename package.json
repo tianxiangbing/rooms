@@ -1,5 +1,5 @@
 {
-  "name": "rooms",
+  "name": "socket.io-rooms",
   "version": "1.0.0",
   "description": "socket.io rooms",
   "main": "index.js",

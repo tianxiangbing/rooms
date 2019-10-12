@@ -28,7 +28,7 @@ class Room {
         })
     }
     mapPeoples(){
-        return this.peoples.map(user=>user.uid)
+        return this.peoples.map(user=>user.info)
     }
     leave(user) {
         this.peoples.forEach((item, index) => {
