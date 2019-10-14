@@ -14,9 +14,9 @@
     <input type="text" id="msg"/>
     <input type="button" value="发送" id="send" onclick="send()"/>
     <div id="log"></div>
-    <script src="http://localhost/socket.io/socket.io.js"></script>
+    <script src="http://270ba7c9.nat123.cc/socket.io/socket.io.js"></script>
     <script>
-        const socket = io('http://localhost/');
+        const socket = io('http://270ba7c9.nat123.cc');
         log =(...args)=>{
             document.getElementById('log').innerHTML +='<br/>'+args.map(item=>JSON.stringify(item)).join(' ')+'=>'+(+new Date());
         } 
