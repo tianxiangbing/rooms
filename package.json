@@ -4,7 +4,7 @@
   "description": "socket.io rooms",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm i",
+    "prestart": "npm install",
     "start": "node main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
