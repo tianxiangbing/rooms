@@ -13,10 +13,13 @@
     <a onclick = "joinroom(2)">2</a>
     <input type="text" id="msg"/>
     <input type="button" value="发送" id="send" onclick="send()"/>
+    <input type="button" value="同步" id="send" onclick="sync()"/>
     <div id="log"></div>
     <script src="http://localhost:8099/socket.io/socket.io.js"></script>
     <script>
         const socket = io('http://localhost:8099');
+        var fromUser = '';
+        var rebots = [];
         log =(...args)=>{
             document.getElementById('log').innerHTML +='<br/>'+args.map(item=>JSON.stringify(item)).join(' ')+'=>'+(+new Date());
         } 
@@ -32,6 +35,12 @@
         });
         socket.on('message',msg=>{
             log('message:',msg)
+            if(msg.type=='GETREBOTS'){
+                fromUser = msg.body.from;
+            }
+            if(msg.type =='ADDREBOTS'){
+                rebots = msg.body.rebots;
+            }
         });
         function joinroom(num){
             //加入房间号为1的房间
@@ -43,6 +52,15 @@
             // setInterval(function(){
             //     socket.emit('message',{type:'TALK',body:+new Date()})
             // },2000)
+        }
+        function sync(){
+            socket.emit('message',{
+                type:'UPDATEREBOTS',
+                body:{
+                    to:fromUser,
+                    rebots:rebots
+                }
+            })
         }
         
     </script>

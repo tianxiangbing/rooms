@@ -15,6 +15,7 @@ let Rooms = {
             Rooms[roomId] = new Room(roomId, user, io);
         }
         Rooms[roomId].add(user,client);
+
     },
     send(roomId,msg){
         Rooms[roomId].sendMsg(msg)
