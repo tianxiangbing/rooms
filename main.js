@@ -44,6 +44,7 @@ io.on('connection', client => {
                 from:user.uid
             })
             clients[uid].emit('message',msg);
+            // clients[uid].emit('test','test123');
         }else{
             let msg = new MSG(actionType.addRebots,{rebots:rebots[roomId]})
             Rooms.send(roomId,msg);
@@ -81,11 +82,11 @@ io.on('connection', client => {
                 // let roomId = user.roomId;
                 // rebots[roomId] = msg.body;
                 let rs = msg.body.rebots;
-                let msg = new MSG(actionType.addRebots,{
+                let mg = new MSG(actionType.addRebots,{
                     rebots: rs
                 })
                 // Rooms.send(roomId, rs);
-                clients[msg.body.to].emit('message',msg);
+                clients[msg.body.to].emit('message',mg);
             }else{
                 if (msg.type == 'update') {
                     user.update(msg.body);
@@ -100,7 +101,7 @@ io.on('connection', client => {
     });
     client.on('disconnect', () => {
         /* … */
-        console.log("连接断开")
+        console.log(user.uid,"连接断开")
         let uid = user.uid;
         delete clients[uid];
         Rooms.leave(user)

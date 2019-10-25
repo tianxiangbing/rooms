@@ -37,11 +37,15 @@
             log('message:',msg)
             if(msg.type=='GETREBOTS'){
                 fromUser = msg.body.from;
+                sync()
             }
             if(msg.type =='ADDREBOTS'){
                 rebots = msg.body.rebots;
             }
         });
+        socket.on('test',msg=>{
+            log('test',msg)
+        })
         function joinroom(num){
             //加入房间号为1的房间
             socket.emit('join',num);
