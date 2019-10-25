@@ -19,10 +19,12 @@ class Rebot {
 }
 //大厅
 io.on('connection', client => {
+    console.log('有新的连接...')
     let user = new User();
     clients[user.uid] = client;
     client.emit('user', user);
     client.on('join', roomId => {
+        clients[user.uid].roomId = roomId;
         /* 加入某个房间 */
         Rooms.join(roomId, user, io, client);
         //判断房间内是否有机器人，没有则生成,
