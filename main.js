@@ -31,9 +31,9 @@ io.on('connection', client => {
         if (!rebots[roomId] || rebots[roomId].length == 0) {
             //把第一个进
             rebots[roomId]=[];
-            for (let i = 0; i < 10; i++) {
+            for (let i = 0; i < 1; i++) {
                 let x = +(Math.random()*2000).toFixed(0);
-                let direction = 0
+                let direction = item.direction||0
                 let rebot = new Rebot(roomId,x,direction);
                 rebots[roomId].push(rebot);
             }
