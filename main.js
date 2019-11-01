@@ -1,3 +1,10 @@
+/*
+ * @Descripttion: 
+ * @Author: tianxiangbing
+ * @Date: 2019-08-12 10:51:36
+ * @LastEditTime: 2019-11-01 10:43:31
+ * @github: https://github.com/tianxiangbing
+ */
 /**
  * websocket
  */
@@ -33,7 +40,7 @@ io.on('connection', client => {
             rebots[roomId]=[];
             for (let i = 0; i < 1; i++) {
                 let x = +(Math.random()*2000).toFixed(0);
-                let direction = item.direction||0
+                let direction = 0;
                 let rebot = new Rebot(roomId,x,direction);
                 rebots[roomId].push(rebot);
             }
