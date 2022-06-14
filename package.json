@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/tianxiangbing/rooms#readme",
   "dependencies": {
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "socket.io-rooms": "^1.0.1"
   }
 }
