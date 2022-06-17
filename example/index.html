@@ -9,42 +9,94 @@
 </head>
 
 <body>
-    <a onclick = "joinroom(1)">1</a>
-    <a onclick = "joinroom(2)">2</a>
-    <input type="text" id="msg"/>
-    <input type="button" value="发送" id="send" onclick="send()"/>
+    <a onclick="joinroom(1)">1</a>
+    <a onclick="joinroom(2)">2</a>
+    <input type="text" id="msg" />
+    <input type="button" value="发送" id="send" onclick="send()" />
     <div id="log"></div>
     <script src="http://localhost:8099/socket.io/socket.io.js"></script>
     <script>
-        const socket = io('http://localhost:8099');
-        log =(...args)=>{
-            document.getElementById('log').innerHTML +='<br/>'+args.map(item=>JSON.stringify(item)).join(' ')+'=>'+(+new Date());
-        } 
+        const socket = io('http://localhost:8099'); //连接socket服务器,
+        log = (...args) => {
+            //写入到页面显示
+            document.getElementById('log').innerHTML += '<br/>' + args.map(item => JSON.stringify(item)).join(' ') + '=>' + (+new Date().getFullYear());
+        }
 
-        log(socket.id)
-        let user ={},room,client;
+        // log(socket.id) //第一次打开页面是未定义状态
+        // console.log(socket.id, "id")
+        let user = {},
+            room, client;
         socket.on('connect', (c) => {
-            log('connect ...', socket.id);
-            socket.on('user',u=>{
+            log('connect 连接中 ...,id为(当多个客户端连接服务器时，用于区分每一个客户端):', socket.id);
+            socket.on('user', u => {
                 user = u;
-                log('用户ID',u.uid)
+                log('用户ID', u.uid)
             });
+            log(socket.disconnected, "断开连接");
+            log(socket.connected, "连接");
+
+
+            const engine = socket.io.engine;
+            //各种事件
+            // console.log(engine.transport.name); // in most cases, prints "polling"
+
+            // engine.once("upgrade", () => {
+            //     // called when the transport is upgraded (i.e. from HTTP long-polling to WebSocket)
+            //     console.log(engine.transport.name); // in most cases, prints "websocket"
+            // });
+
+            // engine.on("packet", ({
+            //     type,
+            //     data
+            // }) => {
+            //     // called for each packet received
+            // });
+
+            // engine.on("packetCreate", ({
+            //     type,
+            //     data
+            // }) => {
+            //     // called for each packet sent
+            // });
+
+            // engine.on("drain", () => {
+            //     // called when the write buffer is drained
+            // });
+
+            engine.on("close", (reason) => {
+                // called when the underlying connection is closed
+                log(`关闭${reason}`)
+            });
+
+
         });
-        socket.on('message',msg=>{
-            log('message:',msg)
+
+        socket.on("close", () => {
+            console.log(socket.id, "关闭"); // false
         });
-        function joinroom(num){
-            //加入房间号为1的房间
-            socket.emit('join',num);
+        socket.on('message', msg => {
+            log('message(收到消息):', msg)
+        });
+
+        function joinroom(num) {
+            //加入房间号为num的房间
+            socket.emit('join', num);
         }
-        function send(){
+
+        function send() {
+            //发送消息
             let msg = document.getElementById('msg').value;
-            socket.emit('message',{type:'TALK',body:msg})
-            // setInterval(function(){
-            //     socket.emit('message',{type:'TALK',body:+new Date()})
-            // },2000)
+            socket.emit('message', {
+                    type: 'TALK/客户端发送消息服务器转发到对应的房间',
+                    body: msg
+                })
+                // setInterval(function() {
+                //     socket.emit('message', {
+                //         type: 'TALK',
+                //         body: +new Date()
+                //     })
+                // }, 200)
         }
-        
     </script>
 </body>
 

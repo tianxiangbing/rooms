@@ -11,6 +11,7 @@ class Room {
     }
     sendMsg(msg) {
         msg.roomId = this.roomId;
+        console.log(`向${this.roomId}房间发送消息${msg}`)
         this.io.to(this.roomId).emit('message', msg);
     }
     add(user, client) {
@@ -20,7 +21,7 @@ class Room {
             console.log(rooms);
             user.updateRoom(roomId, client)
             this.peoples.push(user);
-            console.log(roomId + '新的用户加入', user)
+            console.log(`新的用户${user.uid}加入房间${roomId}`)
                 //发送固定的消息格式
             this.sendMsg(new MSG(actionType.join, {
                 user: user.uid,
@@ -36,6 +37,7 @@ class Room {
             if (user.uid === item.uid) {
                 this.peoples.splice(index, 1);
                 user.client.leave(user.roomId, () => {
+                    console.log(`${user.uid}离开了${user.roomId}号房间`)
                     this.sendMsg(new MSG(actionType.leave, {
                         user: user.uid,
                         peoples: this.mapPeoples()
